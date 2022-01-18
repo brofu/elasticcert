@@ -2,8 +2,8 @@
 
   | Content | Timeline | Status | Comments |
   | --- | --- | --- | --- |
-  | General Info | 21/01 | on track | |
-  | Environment Prepare | 21/01 | on track | |
+  | General Info | 21/01 | <span style="color:green">on track</span>| |
+  | Environment Prepare | 21/01 | <span style="color:green">on track</span> | |
   | 1st Knowledge | 11/02 | pending | 3 weeks |
   | 1nd Exercises| 04/03 | pending | 3 weeks |
   | 1st Knowledge | 18/03 | pending | 2 weeks |
