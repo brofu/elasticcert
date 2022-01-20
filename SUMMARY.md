@@ -3,3 +3,4 @@
         * [general info](ece/general.md)
         * [roadmap](ece/Roadmap.md)
         * [knowledge](ece/list.md)
+            * [install & config](ece/ic.md)
