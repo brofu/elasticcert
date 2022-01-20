@@ -57,6 +57,8 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="ic.html" />
+    
     
     <link rel="prev" href="Roadmap.html" />
     
@@ -152,6 +154,25 @@
             
 
             
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1.1.3.1" data-path="ic.html">
+            
+                <a href="ic.html">
+            
+                    
+                    install & config
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
         </li>
     
 
@@ -219,43 +240,6 @@
 <li>Mappings and Text Analysis</li>
 <li>Cluster Administration/Management</li>
 </ol>
-<h2 id="1-install-and-configuration">1. Install and Configuration</h2>
-<h4 id="11-deploy-and-start-an-elasticsearch-cluster-that-satisfies-a-given-set-of-requirements">1.1 Deploy and start an ElasticSearch cluster that satisfies a given set of requirements</h4>
-<ul>
-<li>Operations</li>
-</ul>
-<pre><code>// install es.
-wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.13.4-x86_64.rpm
-yun install elasticsearch-7.13.4-x86_64.rpm
-
-// update  /etc/elasticsearch/elasticsearch.yml
-cluster.name: cluster1 
-node.name: node1
-node.master: true 
-node.data: true 
-node.ingest: true
-node.ml: false 
-network.host: 172.17.0.17 // host ip, if docker network mode is `host`
-http.port: 9200
-discovery.seed_hosts: [&quot;172.17.0.17:9300&quot;,&quot;172.17.0.17:9301&quot;]
-cluster.initial_master_nodes: [&quot;172.17.0.17:9300&quot;,&quot;172.17.0.17:9301&quot;]
-
-// start 
-systemctl start elasticsearch.service
-
-// install kibana
-wget https://artifacts.elastic.co/downloads/kibana/kibana-7.13.4-x86_64.rpm
-yun install kibana-7.13.4-x86_64.rpm
-
-// update  /etc/kibana/kibana.yml
-server.host: &quot;10.143.250.194&quot;
-elasticsearch.hosts: [&quot;http://10.143.254.53:9200&quot;, &quot;http://10.143.250.194:9200&quot;]
-
-// start
-systemctl start kibana.service
-</code></pre><ul>
-<li>API: <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.13/setup.html" target="_blank">https://www.elastic.co/guide/en/elasticsearch/reference/7.13/setup.html</a></li>
-</ul>
 
                                 
                                 </section>
@@ -283,10 +267,14 @@ systemctl start kibana.service
 
             
                 
-                <a href="Roadmap.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: roadmap">
+                <a href="Roadmap.html" class="navigation navigation-prev " aria-label="Previous page: roadmap">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="ic.html" class="navigation navigation-next " aria-label="Next page: install & config">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -295,7 +283,7 @@ systemctl start kibana.service
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"knowledge","level":"1.1.1.3","depth":3,"previous":{"title":"roadmap","level":"1.1.1.2","depth":3,"path":"ece/Roadmap.md","ref":"ece/Roadmap.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"ece/list.md","mtime":"2022-01-19T17:54:09.479Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-01-19T18:01:42.571Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"knowledge","level":"1.1.1.3","depth":3,"next":{"title":"install & config","level":"1.1.1.3.1","depth":4,"path":"ece/ic.md","ref":"ece/ic.md","articles":[]},"previous":{"title":"roadmap","level":"1.1.1.2","depth":3,"path":"ece/Roadmap.md","ref":"ece/Roadmap.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"ece/list.md","mtime":"2022-01-20T16:31:52.322Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-01-20T16:36:36.877Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>general info · GitBook</title>
+        <title>install & config · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,8 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="Roadmap.html" />
     
-    
-    <link rel="prev" href="summary.html" />
+    <link rel="prev" href="list.html" />
     
 
     </head>
@@ -117,7 +115,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter active" data-level="1.1.1.1" data-path="general.html">
+        <li class="chapter " data-level="1.1.1.1" data-path="general.html">
             
                 <a href="general.html">
             
@@ -157,7 +155,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.1.1.3.1" data-path="ic.html">
+        <li class="chapter active" data-level="1.1.1.3.1" data-path="ic.html">
             
                 <a href="ic.html">
             
@@ -215,7 +213,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >general info</a>
+        <a href=".." >install & config</a>
     </h1>
 </div>
 
@@ -230,18 +228,99 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="ece-generated-info">ECE Generated Info</h1>
+                                <h1 id="installation-and-configuration">Installation and Configuration</h1>
+<h2 id="1-deploy-and-start-an-elasticsearch-cluster-that-satisfies-a-given-set-of-requirements">1. Deploy and start an ElasticSearch cluster that satisfies a given set of requirements</h2>
 <ul>
-<li>Duration. 3h</li>
-<li>Exam Content. 11/13 tasks?</li>
-<li>ES Version. 7.13</li>
-<li>OS: CentOS 7.x</li>
+<li><strong>Operations</strong></li>
 </ul>
-<h2 id="key-points">Key Points</h2>
+<pre><code>// install es.
+wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.13.4-x86_64.rpm
+yun install elasticsearch-7.13.4-x86_64.rpm
+
+// update  /etc/elasticsearch/elasticsearch.yml
+cluster.name: cluster1 
+node.roles: [master, data, voting_only] // 3 `master-eligible` nodes, and 1 `voting-only master-eligible` node
+network.host: 172.17.0.17 // host ip, if docker network mode is `host`
+http.port: 9200
+discovery.seed_hosts: [&quot;172.17.0.17:9300&quot;,&quot;172.17.0.17:9301&quot;]
+cluster.initial_master_nodes: [&quot;172.17.0.17:9300&quot;,&quot;172.17.0.17:9301&quot;]
+
+// start 
+systemctl start elasticsearch.service
+
+// install kibana
+wget https://artifacts.elastic.co/downloads/kibana/kibana-7.13.4-x86_64.rpm
+yun install kibana-7.13.4-x86_64.rpm
+
+// update  /etc/kibana/kibana.yml
+server.host: &quot;10.143.250.194&quot;
+elasticsearch.hosts: [&quot;http://10.143.254.53:9200&quot;, &quot;http://10.143.250.194:9200&quot;]
+
+// start
+systemctl start kibana.service
+</code></pre><ul>
+<li>API: <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.13/setup.html" target="_blank">https://www.elastic.co/guide/en/elasticsearch/reference/7.13/setup.html</a></li>
+</ul>
+<h2 id="2-configure-the-nodes-of-a-cluster-to-satisfy-a-given-set-of-requirements">2. Configure the nodes of a cluster to satisfy a given set of requirements</h2>
+<p>Doc <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.13/modules-node.html" target="_blank">https://www.elastic.co/guide/en/elasticsearch/reference/7.13/modules-node.html</a></p>
 <ul>
-<li>Take PassPort for identity checking</li>
-<li>Exam Environment Compatibility Testing.   <a href="https://www.examslocal.com/ScheduleExam/Home/CompatibilityCheck" target="_blank">https://www.examslocal.com/ScheduleExam/Home/CompatibilityCheck</a></li>
-<li>Align with examiner in advance of 15 minutes before exam starts</li>
+<li><strong>Roles</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Role</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">master</td>
+<td>- eligible to be elected as the <code>master</code> node <br></td>
+</tr>
+<tr>
+<td style="text-align:center">data</td>
+<td>- hold data <br> - perform data related operations, such as CURD, search and aggregations. <br> - can fill any of the specialised data roles</td>
+</tr>
+<tr>
+<td style="text-align:center">ingest</td>
+<td>- support to apply an ingest pipeline to a document into to <code>transform</code> or <code>enrich</code> the document before indexing. <br> - Use dedicated ingest node <br> - Not to have <code>master</code> or <code>data</code> role</td>
+</tr>
+<tr>
+<td style="text-align:center">remote_cluster_client</td>
+<td>- eligible to act a remote client</td>
+</tr>
+<tr>
+<td style="text-align:center">ml</td>
+<td>- Perform <code>machine learning</code> features. <br> - There is must be at least one <code>ml</code> node in the cluster, if need <code>machine learning</code> features </td>
+</tr>
+<tr>
+<td style="text-align:center">transform</td>
+<td>- Perform <code>transforms</code>. <br> - There must be at least one <code>transform</code> node in the cluster, if need <code>transforms</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p><strong>Coordinating node</strong></p>
+<ul>
+<li>search request, 2 phase<ul>
+<li>scatter phase</li>
+<li>gather phase</li>
+</ul>
+</li>
+<li>a node with explicit <strong>empty</strong> list of roles via <code>node.roles</code>  </li>
+</ul>
+</li>
+<li><p><strong>Master-eligible nodes</strong></p>
+<ul>
+<li>Responsible for <strong>lightweight</strong> cluster-wide operations. Such as <ul>
+<li>creating or deleting index</li>
+<li>tracking which nodes are part of the cluster.</li>
+<li>deciding which shards to allocate to which node.</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
                                 
@@ -270,14 +349,10 @@
 
             
                 
-                <a href="summary.html" class="navigation navigation-prev " aria-label="Previous page: ece">
+                <a href="list.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: knowledge">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
-                
-                <a href="Roadmap.html" class="navigation navigation-next " aria-label="Next page: roadmap">
-                    <i class="fa fa-angle-right"></i>
-                </a>
                 
             
         
@@ -286,7 +361,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"general info","level":"1.1.1.1","depth":3,"next":{"title":"roadmap","level":"1.1.1.2","depth":3,"path":"ece/Roadmap.md","ref":"ece/Roadmap.md","articles":[]},"previous":{"title":"ece","level":"1.1.1","depth":2,"path":"ece/summary.md","ref":"ece/summary.md","articles":[{"title":"general info","level":"1.1.1.1","depth":3,"path":"ece/general.md","ref":"ece/general.md","articles":[]},{"title":"roadmap","level":"1.1.1.2","depth":3,"path":"ece/Roadmap.md","ref":"ece/Roadmap.md","articles":[]},{"title":"knowledge","level":"1.1.1.3","depth":3,"path":"ece/list.md","ref":"ece/list.md","articles":[{"title":"install & config","level":"1.1.1.3.1","depth":4,"path":"ece/ic.md","ref":"ece/ic.md","articles":[]}]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"ece/general.md","mtime":"2022-01-19T17:58:43.674Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-01-20T16:36:36.877Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"install & config","level":"1.1.1.3.1","depth":4,"previous":{"title":"knowledge","level":"1.1.1.3","depth":3,"path":"ece/list.md","ref":"ece/list.md","articles":[{"title":"install & config","level":"1.1.1.3.1","depth":4,"path":"ece/ic.md","ref":"ece/ic.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"ece/ic.md","mtime":"2022-01-20T16:36:09.248Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-01-20T16:36:36.877Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
