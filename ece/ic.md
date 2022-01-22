@@ -61,3 +61,27 @@ Doc https://www.elastic.co/guide/en/elasticsearch/reference/7.13/modules-node.ht
     * creating or deleting index
     * tracking which nodes are part of the cluster.
     * deciding which shards to allocate to which node.
+
+## 3. Secure a cluster using Elasticsearch Security
+
+* **Operations**
+
+```
+# enable security setting
+
+// update elasticsearch.yml
+
+xpack.security.enabled: true
+xpack.security.transport.ssl.enabled: true // if `xpack.security.enabled` is set to true, then, this config must be set to true.
+
+// update passwords
+/usr/share/elasticsearch/bin/elasticsearch-setup-passwords interactive
+
+```
+* **Key Points**
+  * If `xpack.security.enabled` is set to true, then, `xpack.security.transport.ssl.enabled` must be set to true. (not sure if this new for 7.13)
+  * The path of `elasticsearch-setup-passwords`
+  * Issue of `[503] master_not_discovered_exception` for `elasticsearch-setup-passwords` tool
+
+
+
